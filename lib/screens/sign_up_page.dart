@@ -1,10 +1,11 @@
+import 'package:fitness_tracker_frontend/screens/main_screen.dart';
 import 'package:flutter/material.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/custom_text_field.dart';
 import '../screens/sign_in_page.dart';
 
 class SignUpPage extends StatelessWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +71,17 @@ class SignUpPage extends StatelessWidget {
                         obscureText: true,
                       ),
                       const SizedBox(height: 28),
-                      PrimaryButton(text: 'Sign up', onPressed: () {}),
+                      PrimaryButton(
+                        text: 'Sign up',
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MainScreen(),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(height: 32),
                       const SizedBox(height: 16),
                     ],

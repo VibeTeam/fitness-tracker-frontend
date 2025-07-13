@@ -7,12 +7,12 @@ class CustomTextField extends StatelessWidget {
   final double borderRadius;
 
   const CustomTextField({
-    Key? key,
+    super.key,
     required this.hintText,
     this.obscureText = false,
     this.keyboardType,
     this.borderRadius = 16.0, // значение по умолчанию
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
+import 'package:fitness_tracker_frontend/screens/sign_in_page.dart';
+
+import "/screens/main_screen.dart";
 import 'package:flutter/material.dart';
-import "screens/sign_in_page.dart";
-import "screens/sign_up_page.dart";
 
 void main() {
   runApp(const MyApp());

@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -6,12 +7,12 @@ class PrimaryButton extends StatelessWidget {
   final bool enabled;
   final double borderRadius;
   const PrimaryButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.enabled = true,
     this.borderRadius = 16.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +24,7 @@ class PrimaryButton extends StatelessWidget {
           height: 48,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius),
-            gradient: const LinearGradient(
-              colors: [Color(0xFF2979FF), Color(0xFF1565C0)],
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-            ),
+            gradient: AppColors.primaryGradient,
           ),
           alignment: Alignment.center,
           child: Text(
