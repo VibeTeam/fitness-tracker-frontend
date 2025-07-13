@@ -3,8 +3,8 @@
 ## 1. Clone the Repository
 
 ```sh
-git clone <YOUR_REPOSITORY_URL>
-cd <YOUR_PROJECT_FOLDER>
+git clone https://github.com/VibeTeam/fitness-tracker-frontend
+cd fitness-tracker-frontend
 ```
 
 ## 2. Install Flutter SDK
