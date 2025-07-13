@@ -1,6 +1,8 @@
+import 'package:fitness_tracker_frontend/screens/exercises_page.dart';
 import 'package:fitness_tracker_frontend/screens/sign_in_page.dart';
-
+import 'package:fitness_tracker_frontend/screens/exercises_page.dart';
 import "/screens/main_screen.dart";
+
 import 'package:flutter/material.dart';
 
 void main() {
