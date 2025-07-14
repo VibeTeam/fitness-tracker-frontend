@@ -75,7 +75,9 @@ class _MuscleGroupCard extends StatelessWidget {
       onTap: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ExercisesPage()),
+          MaterialPageRoute(
+            builder: (context) => ExercisesPage(title: title)
+          ),
         );
       },
       child: Container(

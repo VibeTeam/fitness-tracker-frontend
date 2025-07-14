@@ -3,13 +3,14 @@ import 'package:fitness_tracker_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter/material.dart';
 
 class ExercisesPage extends StatelessWidget {
-  const ExercisesPage({super.key});
+  final String title;
+  const ExercisesPage({required this.title, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.grey,
-      appBar: const CustomAppBar(title: 'Chest', showBackButton: true),
+      appBar: CustomAppBar(title: title, showBackButton: true),
 
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -64,7 +65,7 @@ class _ExerciseCard extends StatelessWidget {
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
+          const BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -81,7 +82,7 @@ class _ExerciseCard extends StatelessWidget {
           const SizedBox(height: 4),
           Text(
             description,
-            style: const TextStyle(fontSize: 14, color: AppColors.black),
+            style: const TextStyle(fontSize: 14, color: Colors.black54),
           ),
         ],
       ),

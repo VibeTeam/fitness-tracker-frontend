@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 import 'trainings_page.dart';
 import 'profile_page.dart';
 
@@ -12,46 +13,56 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [TrainingsPage(), ProfilePage()];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
+  final List<Widget> _pages = [
+    const TrainingsPage(),
+    const ProfilePage()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      backgroundColor: AppColors.grey,
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
       bottomNavigationBar: Container(
-        height: 100,
-        color: Colors.white,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.list_alt,
-                size: 32,
-                color: _selectedIndex == 0
-                    ? Color.fromRGBO(57, 129, 224, 1)
-                    : Colors.black,
+        height: MediaQuery.of(context).size.height * 0.12,
+        decoration: BoxDecoration(
+          border: Border(top: BorderSide(color: Colors.grey.shade200)),
+          color: Colors.white,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(24), topRight: Radius.circular(24),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(24), topLeft: Radius.circular(24),
+          ),
+          child: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            elevation: 0,
+            backgroundColor: Colors.white,
+            onTap: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+            iconSize: 32,
+            showSelectedLabels: false,
+            showUnselectedLabels: false,
+            selectedItemColor: AppColors.primaryBlue,
+            items: <BottomNavigationBarItem>[
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.list_alt_outlined),
+                label: 'trainings',
               ),
-              onPressed: () => _onItemTapped(0),
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.person,
-                size: 32,
-                color: _selectedIndex == 1
-                    ? Color.fromRGBO(57, 129, 224, 1)
-                    : Colors.black,
-              ),
-              onPressed: () => _onItemTapped(1),
-            ),
-          ],
+              const BottomNavigationBarItem(
+                icon: Icon(Icons.person),
+                label: 'profile'
+              )
+            ]
+          ),
         ),
       ),
     );

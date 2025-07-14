@@ -1,5 +1,6 @@
 import 'package:fitness_tracker_frontend/screens/main_screen.dart';
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/custom_text_field.dart';
 import '../screens/sign_in_page.dart';
@@ -17,7 +18,7 @@ class SignUpPage extends StatelessWidget {
             Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
+                  horizontal: 24,
                   vertical: 24,
                 ),
                 child: Center(
@@ -34,82 +35,84 @@ class SignUpPage extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 4),
                       RichText(
                         textAlign: TextAlign.center,
                         text: const TextSpan(
                           text: 'Sign ',
                           style: TextStyle(
-                            fontSize: 22,
+                            fontSize: 24,
                             color: Colors.black,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(
                               text: 'up',
                               style: TextStyle(
-                                color: Color(0xFF2979FF),
-                                fontWeight: FontWeight.w600,
+                                color: AppColors.primaryBlue,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ],
                         ),
                       ),
-                      const SizedBox(height: 32),
+                      const SizedBox(height: 24),
                       const CustomTextField(
                         hintText: 'Email',
                         keyboardType: TextInputType.emailAddress,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       const CustomTextField(
                         hintText: 'Enter password',
                         obscureText: true,
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 10),
                       const CustomTextField(
                         hintText: 'Confirm password',
                         obscureText: true,
                       ),
-                      const SizedBox(height: 28),
+                      const SizedBox(height: 10),
                       PrimaryButton(
                         text: 'Sign up',
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushReplacementNamed(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const MainScreen(),
-                            ),
+                            '/main'
                           );
                         },
                       ),
-                      const SizedBox(height: 32),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 48),
                     ],
                   ),
                 ),
               ),
             ),
             Positioned(
-              bottom: 5,
+              bottom: 15,
               left: 0,
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Already registered? '),
+                  const Text(
+                    'Already registered? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacementNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignInPage(),
-                        ),
+                        '/login'
                       );
                     }, // TODO: Навигация на SignInPage
                     child: const Text(
                       'Sign in',
                       style: TextStyle(
-                        color: Color(0xFF2979FF),
+                        color: AppColors.primaryBlue,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),

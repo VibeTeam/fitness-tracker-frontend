@@ -21,18 +21,24 @@ class CustomTextField extends StatelessWidget {
       keyboardType: keyboardType,
       decoration: InputDecoration(
         hintText: hintText,
+        hintStyle: const TextStyle(
+          color: Color(0xff7F7F7F),
+        ),
         filled: true,
         fillColor: Colors.white,
         contentPadding: const EdgeInsets.symmetric(
-          vertical: 16,
-          horizontal: 20,
+          vertical: 12,
+          horizontal: 16,
         ),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(borderRadius),
           borderSide: BorderSide.none,
         ),
       ),
-      style: const TextStyle(fontSize: 16),
+      style: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+      ),
     );
   }
 }

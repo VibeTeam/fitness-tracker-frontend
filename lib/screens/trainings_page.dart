@@ -7,11 +7,14 @@ class TrainingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.grey,
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.grey,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
         title: const Text(
-          'Trainings',
+          'My Trainings',
           style: TextStyle(
             color: AppColors.black,
             fontSize: 24,
@@ -22,11 +25,12 @@ class TrainingsPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           children: [
             const SizedBox(height: 20),
             // Back & Biceps
-            _TrainingCard(
+            const _TrainingCard(
               title: 'Back & Biceps',
               date: 'Sat, Jan 20',
               exercises: [
@@ -42,7 +46,7 @@ class TrainingsPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Chest & Triceps
-            _TrainingCard(
+            const _TrainingCard(
               title: 'Chest & Triceps',
               date: 'Wed, Jan 17',
               exercises: [
@@ -56,7 +60,7 @@ class TrainingsPage extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             // Legs & Abs
-            _TrainingCard(
+            const _TrainingCard(
               title: 'Legs & Abs',
               date: 'Mon, Jan 15',
               exercises: [
@@ -72,7 +76,7 @@ class TrainingsPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           shape: BoxShape.circle,
           gradient: AppColors.primaryGradient,
         ),
@@ -84,7 +88,7 @@ class TrainingsPage extends StatelessWidget {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              backgroundColor: AppColors.grey,
+              backgroundColor: AppColors.white,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
               ),
@@ -95,7 +99,7 @@ class TrainingsPage extends StatelessWidget {
                 expand: false,
                 builder: (context, scrollController) => SingleChildScrollView(
                   controller: scrollController,
-                  child: _AddTrainingModal(),
+                  child: const _AddTrainingModal(),
                 ),
               ),
             );
@@ -123,10 +127,11 @@ class _TrainingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      elevation: 2,
+      elevation: 0,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -136,17 +141,17 @@ class _TrainingCard extends StatelessWidget {
                 Text(
                   title,
                   style: const TextStyle(
-                    fontSize: 16,
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   date,
-                  style: const TextStyle(fontSize: 13, color: Colors.grey),
+                  style: const TextStyle(fontSize: 13, color: Colors.black54),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             ...exercises,
           ],
         ),
@@ -168,7 +173,12 @@ class _ExerciseRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Text(name),
+          Text(
+            name,
+            style: const TextStyle(
+              color: Colors.black54
+            ),
+          ),
           const SizedBox(width: 6),
           Text(
             count,
@@ -202,7 +212,7 @@ class _SetRow extends StatelessWidget {
 }
 
 class _AddTrainingModal extends StatelessWidget {
-  const _AddTrainingModal({Key? key}) : super(key: key);
+  const _AddTrainingModal({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +221,7 @@ class _AddTrainingModal extends StatelessWidget {
         children: [
           SizedBox(
             child: Container(
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: AppColors.white,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(24),
@@ -252,6 +262,7 @@ class _AddTrainingModal extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      controller: null,
                       decoration: InputDecoration(
                         hintText: 'Enter title',
                         filled: true,
@@ -288,7 +299,7 @@ class _AddTrainingModal extends StatelessWidget {
                         ],
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 40),
                   ],
                 ),
               ),
@@ -305,7 +316,10 @@ class _AddTrainingModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => Navigator.pushNamed(
+                      context,
+                      '/exercises_group'
+                    ),
                     child: const Text(
                       'Add exercise',
                       style: TextStyle(color: Color(0xFF3981E0), fontSize: 16),

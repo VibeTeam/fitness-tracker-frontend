@@ -8,8 +8,10 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.white,
+        backgroundColor: AppColors.grey,
         elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
         title: const Text(
           'Profile',
           style: TextStyle(
@@ -20,7 +22,7 @@ class ProfilePage extends StatelessWidget {
           textAlign: TextAlign.center,
         ),
       ),
-      backgroundColor: const Color.fromRGBO(245, 245, 245, 1),
+      backgroundColor: AppColors.grey,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,

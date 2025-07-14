@@ -1,8 +1,7 @@
-import 'package:fitness_tracker_frontend/screens/main_screen.dart';
 import 'package:flutter/material.dart';
+import '../theme/app_colors.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/custom_text_field.dart';
-import '../screens/sign_up_page.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -10,14 +9,14 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: AppColors.grey,
       body: SafeArea(
         child: Stack(
           children: [
             Center(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
+                  horizontal: 24,
                   vertical: 24,
                 ),
                 child: Column(
@@ -28,81 +27,83 @@ class SignInPage extends StatelessWidget {
                     const Text(
                       'Welcome back!',
                       style: TextStyle(
-                        fontSize: 26,
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 4),
                     RichText(
                       textAlign: TextAlign.center,
                       text: const TextSpan(
                         text: 'Sign ',
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: 24,
                           color: Colors.black,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.bold,
                         ),
                         children: [
                           TextSpan(
                             text: 'in',
                             style: TextStyle(
-                              color: Color(0xFF2979FF),
-                              fontWeight: FontWeight.w600,
+                              color: AppColors.primaryBlue,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     const CustomTextField(
                       hintText: 'Email',
                       keyboardType: TextInputType.emailAddress,
                     ),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     const CustomTextField(
                       hintText: 'Password',
                       obscureText: true,
                     ),
-                    const SizedBox(height: 28),
+                    const SizedBox(height: 10),
                     PrimaryButton(
                       text: 'Sign in',
                       onPressed: () {
-                        Navigator.push(
+                        Navigator.pushReplacementNamed(
                           context,
-                          MaterialPageRoute(
-                            builder: (context) => const MainScreen(),
-                          ),
+                          '/main'
                         );
                       },
                     ),
-                    const SizedBox(height: 32),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 48),
                   ],
                 ),
               ),
             ),
             Positioned(
-              bottom: 5,
+              bottom: 15,
               left: 0,
               right: 0,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text('Not registered? '),
+                  const Text(
+                    'Not registered? ',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
+                      Navigator.pushReplacementNamed(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignUpPage(),
-                        ),
+                        '/register'
                       );
                     }, // TODO: Навигация на SignUpPage
                     child: const Text(
                       'Sign up',
                       style: TextStyle(
-                        color: Color(0xFF2979FF),
+                        color: AppColors.primaryBlue,
+                        fontSize: 16,
                         fontWeight: FontWeight.w500,
                       ),
                     ),
