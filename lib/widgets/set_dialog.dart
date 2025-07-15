@@ -91,11 +91,12 @@ class _SetDialogState extends State<_SetDialog> {
                         children: [
                           Row(
                             children: [
-                              Text('Set ${index + 1}',
+                              Text(
+                                'Set ${index + 1}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
-                                )
+                                ),
                               ),
                               const Spacer(),
                               GestureDetector(
@@ -105,7 +106,7 @@ class _SetDialogState extends State<_SetDialog> {
                                   size: 20,
                                 ),
                                 onTap: () => _removeSet(index),
-                              )
+                              ),
                             ],
                           ),
                           const SizedBox(height: 8),
@@ -113,16 +114,16 @@ class _SetDialogState extends State<_SetDialog> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text('Weight: '),
-                              SizedBox(
+                              Expanded(
                                 child: TextField(
                                   decoration: const InputDecoration(
-                                    border: InputBorder.none
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.zero,
+                                    isDense: true,
                                   ),
                                   onChanged: (value) =>
                                       _updateSet(index, 'weight', value),
                                 ),
-                                height: 24,
-                                width: 48,
                               ),
                             ],
                           ),
@@ -130,16 +131,16 @@ class _SetDialogState extends State<_SetDialog> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               const Text('Reps: '),
-                              SizedBox(
+                              Expanded(
                                 child: TextField(
                                   decoration: const InputDecoration(
-                                    border: InputBorder.none
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.zero,
+                                    isDense: true,
                                   ),
                                   onChanged: (value) =>
                                       _updateSet(index, 'reps', value),
                                 ),
-                                width: 48,
-                                height: 24,
                               ),
                             ],
                           ),
@@ -160,7 +161,7 @@ class _SetDialogState extends State<_SetDialog> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w500,
-                        color: AppColors.primaryBlue
+                        color: AppColors.primaryBlue,
                       ),
                     ),
                   ),
@@ -201,7 +202,7 @@ class _SetDialogState extends State<_SetDialog> {
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

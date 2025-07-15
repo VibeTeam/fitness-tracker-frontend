@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 
 class PrimaryButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final bool enabled;
   final double borderRadius;
+
   const PrimaryButton({
     super.key,
     required this.text,
-    required this.onPressed,
+    this.onPressed,
     this.enabled = true,
     this.borderRadius = 16.0,
   });
