@@ -25,7 +25,6 @@ class TrainingsPage extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           children: [
             const SizedBox(height: 20),
