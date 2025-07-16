@@ -98,6 +98,7 @@ class _TrainingsPageState extends State<TrainingsPage> {
     return Scaffold(
       backgroundColor: AppColors.grey,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: AppColors.grey,
         actions: [
           IconButton(
@@ -147,7 +148,7 @@ class _TrainingsPageState extends State<TrainingsPage> {
                         itemBuilder: (context, index) {
                           final session = _workoutSessions[index];
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.only(bottom: 8),
                             child: _TrainingCard(
                               title: session.workoutType?.name ??
                                   AppLocalizations.of(context)
@@ -360,27 +361,6 @@ class _AddTrainingModal extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: AppColors.grey,
-                        borderRadius: BorderRadius.circular(14),
-                      ),
-                      child: const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Pull ups x3',
-                            style: TextStyle(fontWeight: FontWeight.w500),
-                          ),
-                          SizedBox(height: 6),
-                          Text('Set 1: 12'),
-                          Text('Set 2: 11'),
-                          Text('Set 3: 9'),
-                        ],
-                      ),
-                    ),
                     const SizedBox(height: 40),
                   ],
                 ),
@@ -414,7 +394,7 @@ class _AddTrainingModal extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pop(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,

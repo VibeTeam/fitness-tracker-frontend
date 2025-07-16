@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../l10n/app_localizations.dart';
@@ -56,7 +57,9 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
             ),
             SizedBox(height: 48),
-            CircularProgressIndicator(),
+            CircularProgressIndicator(
+              color: AppColors.primaryBlue,
+            ),
           ],
         ),
       ),
