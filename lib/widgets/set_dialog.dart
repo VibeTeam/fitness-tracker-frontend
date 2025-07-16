@@ -30,11 +30,35 @@ class _SetDialogState extends State<_SetDialog> {
     {'weight': '', 'reps': ''},
   ];
   bool _isLoading = false;
+  final List<TextEditingController> _weightControllers = [];
+  final List<TextEditingController> _repsControllers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    for (var set in sets) {
+      _weightControllers.add(TextEditingController(text: set['weight']));
+      _repsControllers.add(TextEditingController(text: set['reps']));
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _weightControllers) {
+      controller.dispose();
+    }
+    for (var controller in _repsControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
 
   void _addSet() {
     if (sets.length < 6) {
       setState(() {
         sets.add({'weight': '', 'reps': ''});
+        _weightControllers.add(TextEditingController(text: ''));
+        _repsControllers.add(TextEditingController(text: ''));
       });
     }
   }
@@ -49,6 +73,10 @@ class _SetDialogState extends State<_SetDialog> {
     if (sets.length > 1) {
       setState(() {
         sets.removeAt(index);
+        _weightControllers[index].dispose();
+        _weightControllers.removeAt(index);
+        _repsControllers[index].dispose();
+        _repsControllers.removeAt(index);
       });
     }
   }
@@ -185,8 +213,7 @@ class _SetDialogState extends State<_SetDialog> {
                               ),
                               Expanded(
                                 child: TextField(
-                                  controller: TextEditingController(
-                                      text: sets[index]['weight']),
+                                  controller: _weightControllers[index],
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.zero,
@@ -206,8 +233,7 @@ class _SetDialogState extends State<_SetDialog> {
                               ),
                               Expanded(
                                 child: TextField(
-                                  controller: TextEditingController(
-                                      text: sets[index]['reps']),
+                                  controller: _repsControllers[index],
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.zero,

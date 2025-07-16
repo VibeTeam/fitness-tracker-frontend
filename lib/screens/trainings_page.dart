@@ -99,6 +99,7 @@ class _TrainingsPageState extends State<TrainingsPage> {
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.background,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Icon(Icons.language,
@@ -148,7 +149,7 @@ class _TrainingsPageState extends State<TrainingsPage> {
                         itemBuilder: (context, index) {
                           final session = _workoutSessions[index];
                           return Padding(
-                            padding: const EdgeInsets.only(bottom: 16),
+                            padding: const EdgeInsets.only(bottom: 8),
                             child: _TrainingCard(
                               title: session.workoutType?.name ??
                                   AppLocalizations.of(context)
@@ -428,7 +429,7 @@ class _AddTrainingModal extends StatelessWidget {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () => Navigator.of(context).pop(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
