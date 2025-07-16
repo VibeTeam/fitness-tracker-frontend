@@ -57,14 +57,14 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: IndexedStack(
         index: _selectedIndex,
         children: [const TrainingsPage(), const ProfilePage()],
       ),
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: Color(0x1A000000),
@@ -77,9 +77,10 @@ class _MainScreenState extends State<MainScreen> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           selectedItemColor: AppColors.primaryBlue,
-          unselectedItemColor: Colors.grey,
+           unselectedItemColor:
+              Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
           items:  [
@@ -101,7 +102,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _buildHomePage() {
     return Scaffold(
-      backgroundColor: AppColors.grey,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: CustomAppBar(
         title: AppLocalizations.of(context).translate('appTitle'),
       ),
@@ -137,8 +138,9 @@ class _MainScreenState extends State<MainScreen> {
                                       AppLocalizations.of(context).translate('user'),
                                 },
                               ),
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary,
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -148,7 +150,10 @@ class _MainScreenState extends State<MainScreen> {
                               AppLocalizations.of(context).translate('readyWorkout'),
 
                               style: TextStyle(
-                                color: Colors.white.withOpacity(0.9),
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withOpacity(0.9),
                                 fontSize: 16,
                               ),
                             ),
@@ -248,14 +253,18 @@ class _MainScreenState extends State<MainScreen> {
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: Theme.of(context).colorScheme.surface,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child:  Center(
                           child: Text(
                             AppLocalizations.of(context).translate('noRecent'),
-                            style: const TextStyle(
-                                color: Colors.grey, fontSize: 16),
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .onSurface
+                                    .withOpacity(0.6),
+                                fontSize: 16),
                           ),
                         ),
                       ),
@@ -286,7 +295,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -297,7 +306,13 @@ class _StatCard extends StatelessWidget {
             value,
             style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-          Text(title, style: const TextStyle(color: Colors.grey, fontSize: 14)),
+          Text(title,
+              style: TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withOpacity(0.6),
+                  fontSize: 14)),
         ],
       ),
     );
@@ -324,7 +339,7 @@ class _ActionCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -334,12 +349,18 @@ class _ActionCard extends StatelessWidget {
             const SizedBox(height: 8),
             Text(
               title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface),
             ),
             const SizedBox(height: 4),
             Text(
               subtitle,
-              style: const TextStyle(color: Colors.grey, fontSize: 12),
+              style: TextStyle(
+                  color:
+                      Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+                  fontSize: 12),
             ),
           ],
         ),

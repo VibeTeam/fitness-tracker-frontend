@@ -69,15 +69,16 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: AppColors.grey,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.language, color: AppColors.black),
+            icon: Icon(Icons.language,
+                color: Theme.of(context).iconTheme.color),
             onPressed: () {
               final currentLocale = Localizations.localeOf(context);
               final newLocale = currentLocale.languageCode == 'en'
@@ -119,9 +120,9 @@ class _SignUpPageState extends State<SignUpPage> {
                             text: TextSpan(
                               text: AppLocalizations.of(context)
                                   .translate('signUpPart1'),
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 24,
-                                color: Colors.black,
+                                color: Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.bold,
                               ),
                               children: [

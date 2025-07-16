@@ -88,13 +88,14 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.grey,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
         actions: [
           IconButton(
-            icon: const Icon(Icons.language, color: AppColors.black),
+            icon: Icon(Icons.language,
+                color: Theme.of(context).iconTheme.color),
             onPressed: () {
               final currentLocale = Localizations.localeOf(context);
               final newLocale = currentLocale.languageCode == 'en'
@@ -103,18 +104,31 @@ class _ProfilePageState extends State<ProfilePage> {
               MyApp.of(context).setLocale(newLocale);
             },
           ),
+          IconButton(
+            icon: Icon(
+              MyApp.of(context).themeMode == ThemeMode.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            onPressed: () {
+              final isDark = MyApp.of(context).themeMode == ThemeMode.dark;
+              MyApp.of(context).setThemeMode(
+                  isDark ? ThemeMode.light : ThemeMode.dark);
+            },
+          ),
         ],
         title:  Text(
           AppLocalizations.of(context).translate('profileTitle'),
-          style: const TextStyle(
-            color: AppColors.black,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
             fontSize: 24,
             fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
         ),
       ),
-      backgroundColor: AppColors.grey,
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -175,10 +189,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 64),
                   Text(
                     AppLocalizations.of(context).translate('aiInsight'),
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
-                      color: AppColors.black,
+                      color: Theme.of(context).colorScheme.onBackground,
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -192,8 +206,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       child: Text(
                         AppLocalizations.of(context).translate('aiText'),
-                        style: const TextStyle(
-                          color: AppColors.white,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                         ),

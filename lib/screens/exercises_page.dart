@@ -67,7 +67,7 @@ class _ExercisesGroupPageState extends State<ExercisesGroupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey,
+      backgroundColor: Theme.of(context).colorScheme.background,
      appBar: CustomAppBar(
           title: AppLocalizations.of(context).translate('exercises'),
           showBackButton: true),
@@ -139,7 +139,7 @@ class _MuscleGroupCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -149,10 +149,10 @@ class _MuscleGroupCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               title,
-              style: const TextStyle(
+              style:  TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
-                color: AppColors.black,
+                color: Theme.of(context).colorScheme.onSurface,
               ),
             ),
           ],
