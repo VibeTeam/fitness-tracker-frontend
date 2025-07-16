@@ -230,6 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 textAlign: TextAlign.center,
               ),
+              
               const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -239,8 +240,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
-                      color: Theme.of(context).colorScheme.onBackground,
-                    ),
+                      color: Theme.of(context).colorScheme.onBackground,),
                   ),
                   const SizedBox(height: 16),
                   Padding(
@@ -260,8 +260,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         textAlign: TextAlign.center,
                       ),
-                  if (_suggestionError)
-                    IconButton(
+                      ),
+                  ),
+                      if(_suggestionError)
+                        IconButton(
                       icon: const Icon(Icons.refresh, size: 20),
                       onPressed: _loadAiSuggestion,
                     ),
@@ -282,8 +284,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   child: Text(
                     _aiSuggestion.replaceAll('**', ''),
-                    style: const TextStyle(
-                      color: AppColors.white,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
                       fontSize: 16,
                       fontWeight: FontWeight.w500,
                     ),

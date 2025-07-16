@@ -112,6 +112,19 @@ class _TrainingsPageState extends State<TrainingsPage> {
               MyApp.of(context).setLocale(newLocale);
             },
           ),
+          IconButton(
+            icon: Icon(
+              MyApp.of(context).themeMode == ThemeMode.dark
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+              color: Theme.of(context).iconTheme.color,
+            ),
+            onPressed: () {
+              final isDark = MyApp.of(context).themeMode == ThemeMode.dark;
+              MyApp.of(context).setThemeMode(
+                  isDark ? ThemeMode.light : ThemeMode.dark);
+            },
+          ),
         ],
         elevation: 0,
         scrolledUnderElevation: 0,
