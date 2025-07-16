@@ -96,13 +96,14 @@ class _TrainingsPageState extends State<TrainingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.grey,
+      backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.background,
         automaticallyImplyLeading: false,
-        backgroundColor: AppColors.grey,
         actions: [
           IconButton(
-            icon: const Icon(Icons.language, color: AppColors.black),
+            icon: Icon(Icons.language,
+                color: Theme.of(context).iconTheme.color),
             onPressed: () {
               final currentLocale = Localizations.localeOf(context);
               final newLocale = currentLocale.languageCode == 'en'
@@ -117,8 +118,8 @@ class _TrainingsPageState extends State<TrainingsPage> {
         centerTitle: true,
         title: Text(
           AppLocalizations.of(context).translate('trainings'),
-          style: const TextStyle(
-            color: AppColors.black,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onBackground,
             fontSize: 24,
             fontWeight: FontWeight.w500,
           ),
@@ -174,7 +175,7 @@ class _TrainingsPageState extends State<TrainingsPage> {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
-              backgroundColor: AppColors.white,
+              backgroundColor: Theme.of(context).colorScheme.surface,
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
               ),
@@ -192,7 +193,8 @@ class _TrainingsPageState extends State<TrainingsPage> {
           },
           backgroundColor: Colors.transparent,
           elevation: 0,
-          child: const Icon(Icons.add, color: AppColors.white, size: 32),
+          child: Icon(Icons.add,
+              color: Theme.of(context).colorScheme.onPrimary, size: 32),
         ),
       ),
     );
@@ -213,7 +215,7 @@ class _TrainingCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: Theme.of(context).colorScheme.surface,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       elevation: 0,
       child: Padding(
@@ -226,14 +228,20 @@ class _TrainingCard extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),
                 Text(
                   date,
-                  style: const TextStyle(fontSize: 13, color: Colors.black54),
+                  style: TextStyle(
+                      fontSize: 13,
+                      color: Theme.of(context)
+                          .colorScheme
+                          .onSurface
+                          .withOpacity(0.6)),
                 ),
               ],
             ),
@@ -259,12 +267,17 @@ class _ExerciseRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Text(name, style: const TextStyle(color: Colors.black54)),
+          Text(name,
+              style: TextStyle(
+                  color: Theme.of(context)
+                      .colorScheme
+                      .onSurface
+                      .withOpacity(0.6))),
           const SizedBox(width: 6),
           Text(
             count,
             style: TextStyle(
-              color: color ?? Colors.black,
+              color: color ?? Theme.of(context).colorScheme.onSurface,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -286,7 +299,9 @@ class _SetRow extends StatelessWidget {
       padding: const EdgeInsets.only(left: 18, top: 1, bottom: 1),
       child: Text(
         text,
-        style: TextStyle(color: color ?? Colors.grey[800], fontSize: 13),
+        style: TextStyle(
+            color: color ?? Theme.of(context).colorScheme.onSurface.withOpacity(0.8),
+            fontSize: 13),
       ),
     );
   }
@@ -303,9 +318,9 @@ class _AddTrainingModal extends StatelessWidget {
         children: [
           SizedBox(
             child: Container(
-              decoration: const BoxDecoration(
-                color: AppColors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(24),
                   topRight: Radius.circular(24),
                 ),
@@ -328,7 +343,7 @@ class _AddTrainingModal extends StatelessWidget {
                         height: 5,
                         margin: const EdgeInsets.only(bottom: 16),
                         decoration: BoxDecoration(
-                          color: AppColors.grey,
+                          color: Theme.of(context).colorScheme.background,
                           borderRadius: BorderRadius.circular(3),
                         ),
                       ),
@@ -349,7 +364,7 @@ class _AddTrainingModal extends StatelessWidget {
                         hintText:
                             AppLocalizations.of(context).translate('enterTitle'),
                         filled: true,
-                        fillColor: AppColors.grey,
+                        fillColor: Theme.of(context).colorScheme.background,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -361,6 +376,27 @@ class _AddTrainingModal extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 16),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.background,
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                      child: const Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Pull ups x3',
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          SizedBox(height: 6),
+                          Text('Set 1: 12'),
+                          Text('Set 2: 11'),
+                          Text('Set 3: 9'),
+                        ],
+                      ),
+                    ),
                     const SizedBox(height: 40),
                   ],
                 ),
@@ -382,8 +418,7 @@ class _AddTrainingModal extends StatelessWidget {
                           Navigator.pushNamed(context, '/exercises_group'),
                       child: Text(
                         AppLocalizations.of(context).translate('addExercise'),
-                        style:
-                            const TextStyle(color: Color(0xFF3981E0), fontSize: 16),
+                        style: const TextStyle(color: Color(0xFF3981E0), fontSize: 16),
                       ),
                   ),
                   SizedBox(
@@ -409,9 +444,10 @@ class _AddTrainingModal extends StatelessWidget {
                         ),
                         child: Text(
                             AppLocalizations.of(context).translate('save'),
-                            style: const TextStyle(
-                                color: Colors.white, fontSize: 16),
-                          ),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              fontSize: 16),
+                        ),
                       ),
                     ),
                   ),

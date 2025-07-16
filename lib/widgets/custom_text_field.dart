@@ -29,7 +29,7 @@ class CustomTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: const TextStyle(color: Color(0xff7F7F7F)),
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).colorScheme.surface,
         contentPadding: const EdgeInsets.symmetric(
           vertical: 12,
           horizontal: 16,
@@ -47,7 +47,11 @@ class CustomTextField extends StatelessWidget {
           borderSide: const BorderSide(color: Colors.red, width: 2),
         ),
       ),
-      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+      style: TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w500,
+        color: Theme.of(context).colorScheme.onSurface,
+      ),
     );
   }
 }

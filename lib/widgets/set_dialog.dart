@@ -135,7 +135,7 @@ class _SetDialogState extends State<_SetDialog> {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       insetPadding: const EdgeInsets.all(40),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -173,7 +173,7 @@ class _SetDialogState extends State<_SetDialog> {
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(16),
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         border: Border.all(color: Colors.grey.shade300),
                       ),
                       child: Column(
@@ -289,19 +289,21 @@ class _SetDialogState extends State<_SetDialog> {
                           elevation: 0,
                         ),
                         child: _isLoading
-                            ? const SizedBox(
+                            ?  SizedBox(
                                 width: 20,
                                 height: 20,
                                 child: CircularProgressIndicator(
                                   strokeWidth: 2,
                                   valueColor: AlwaysStoppedAnimation<Color>(
-                                      Colors.white),
+                                      Theme.of(context).colorScheme.onPrimary),
                                 ),
                               )
                             : Text(
                                 AppLocalizations.of(context).translate('save'),
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 16),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    fontSize: 16),
                               ),
                       ),
                     ),
