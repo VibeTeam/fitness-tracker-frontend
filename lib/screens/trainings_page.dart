@@ -1,8 +1,94 @@
 import 'package:fitness_tracker_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import '../services/workout_service.dart';
+import '../models/workout_models.dart';
+import '../utils/toast_utils.dart';
 
-class TrainingsPage extends StatelessWidget {
+class TrainingsPage extends StatefulWidget {
   const TrainingsPage({super.key});
+
+  @override
+  State<TrainingsPage> createState() => _TrainingsPageState();
+}
+
+class _TrainingsPageState extends State<TrainingsPage> {
+  List<WorkoutSession> _workoutSessions = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadWorkoutSessions();
+  }
+
+  Future<void> _loadWorkoutSessions() async {
+    try {
+      final sessions = await WorkoutService.getWorkoutSessions();
+      if (mounted) {
+        setState(() {
+          _workoutSessions = sessions;
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        ToastUtils.showError('Failed to load workout sessions');
+      }
+    }
+  }
+
+  String _formatDate(String dateTime) {
+    try {
+      final date = DateTime.parse(dateTime);
+      final now = DateTime.now();
+      final difference = now.difference(date).inDays;
+
+      if (difference == 0) {
+        return 'Today';
+      } else if (difference == 1) {
+        return 'Yesterday';
+      } else if (difference < 7) {
+        return '${date.day}/${date.month}';
+      } else {
+        return '${date.day}/${date.month}/${date.year}';
+      }
+    } catch (e) {
+      return 'Unknown date';
+    }
+  }
+
+  List<Widget> _buildExerciseRows(WorkoutSession session) {
+    final List<Widget> rows = [];
+
+    if (session.details != null && session.details!.isNotEmpty) {
+      // Группируем детали по упражнениям
+      final Map<String, List<WorkoutDetail>> exerciseGroups = {};
+
+      for (final detail in session.details!) {
+        final exerciseName = detail.detailName.split(' Set ')[0];
+        if (!exerciseGroups.containsKey(exerciseName)) {
+          exerciseGroups[exerciseName] = [];
+        }
+        exerciseGroups[exerciseName]!.add(detail);
+      }
+
+      // Создаем строки для каждого упражнения
+      exerciseGroups.forEach((exerciseName, details) {
+        rows.add(_ExerciseRow(exerciseName, 'x${details.length}'));
+
+        // Добавляем детали подходов
+        for (final detail in details) {
+          final setNumber = detail.detailName.split(' Set ')[1];
+          rows.add(_SetRow('Set $setNumber: ${detail.detailValue}'));
+        }
+      });
+    }
+
+    return rows;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,55 +110,37 @@ class TrainingsPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-          children: [
-            const SizedBox(height: 20),
-            // Back & Biceps
-            const _TrainingCard(
-              title: 'Back & Biceps',
-              date: 'Sat, Jan 20',
-              exercises: [
-                _ExerciseRow('Pull-ups', 'x4', Colors.green),
-                _ExerciseRow('Horizontal rows', 'x4', Colors.green),
-                _SetRow('Set 1: 40kg x 12'),
-                _SetRow('Set 2: 45kg x 8'),
-                _SetRow('Set 3: 50kg x 8', color: Colors.green),
-                _SetRow('Set 4: 50kg x 7', color: Colors.green),
-                _ExerciseRow('Biceps curls', 'x3'),
-                _ExerciseRow('Hammer curls', 'x2'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Chest & Triceps
-            const _TrainingCard(
-              title: 'Chest & Triceps',
-              date: 'Wed, Jan 17',
-              exercises: [
-                _ExerciseRow('Bench press', 'x4', Colors.green),
-                _ExerciseRow('Dumbbell press', 'x2'),
-                _ExerciseRow('Skull crusher', 'x2', Colors.red),
-                _SetRow('Set 1: 17kg x 12', color: Colors.red),
-                _SetRow('Set 2: 15kg x 10', color: Colors.red),
-                _ExerciseRow('Triceps pushdown', 'x3'),
-              ],
-            ),
-            const SizedBox(height: 16),
-            // Legs & Abs
-            const _TrainingCard(
-              title: 'Legs & Abs',
-              date: 'Mon, Jan 15',
-              exercises: [
-                _ExerciseRow('Leg press', 'x3'),
-                _ExerciseRow('Leg extensions', 'x4', Colors.green),
-                _ExerciseRow('Calves', 'x2'),
-                _ExerciseRow('Oblique crunches', 'x3'),
-                _ExerciseRow('Crunch machine', 'x3'),
-              ],
-            ),
-            const SizedBox(height: 80),
-          ],
-        ),
+        child: _isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : RefreshIndicator(
+                onRefresh: _loadWorkoutSessions,
+                child: _workoutSessions.isEmpty
+                    ? const Center(
+                        child: Text(
+                          'No workouts yet. Start your first workout!',
+                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                        ),
+                      )
+                    : ListView.builder(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 20,
+                        ),
+                        itemCount: _workoutSessions.length,
+                        itemBuilder: (context, index) {
+                          final session = _workoutSessions[index];
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: _TrainingCard(
+                              title: session.workoutType?.name ??
+                                  'Unknown Workout',
+                              date: _formatDate(session.datetime),
+                              exercises: _buildExerciseRows(session),
+                            ),
+                          );
+                        },
+                      ),
+              ),
       ),
       floatingActionButton: Container(
         decoration: const BoxDecoration(
@@ -92,7 +160,7 @@ class TrainingsPage extends StatelessWidget {
                 borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
               ),
               builder: (context) => DraggableScrollableSheet(
-                initialChildSize: 0.7, // 70% экрана
+                initialChildSize: 0.7,
                 minChildSize: 0.4,
                 maxChildSize: 0.95,
                 expand: false,
@@ -172,12 +240,7 @@ class _ExerciseRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 2),
       child: Row(
         children: [
-          Text(
-            name,
-            style: const TextStyle(
-              color: Colors.black54
-            ),
-          ),
+          Text(name, style: const TextStyle(color: Colors.black54)),
           const SizedBox(width: 6),
           Text(
             count,
@@ -315,10 +378,8 @@ class _AddTrainingModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextButton(
-                    onPressed: () => Navigator.pushNamed(
-                      context,
-                      '/exercises_group'
-                    ),
+                    onPressed: () =>
+                        Navigator.pushNamed(context, '/exercises_group'),
                     child: const Text(
                       'Add exercise',
                       style: TextStyle(color: Color(0xFF3981E0), fontSize: 16),

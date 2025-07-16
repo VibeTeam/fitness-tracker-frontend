@@ -1,3 +1,4 @@
+import 'package:fitness_tracker_frontend/services/workout_service.dart';
 import 'package:fitness_tracker_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
@@ -14,7 +15,8 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   User? _user;
   bool _isLoading = true;
-
+  int _workoutSessions = 0;
+  bool _isSessionsLoading = true;
   @override
   void initState() {
     super.initState();
@@ -29,6 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
           _user = user;
           _isLoading = false;
         });
+        // Загружаем сессии после успешной загрузки пользователя
+        _loadWorkoutSessions();
       }
     } catch (e) {
       if (mounted) {
@@ -36,6 +40,25 @@ class _ProfilePageState extends State<ProfilePage> {
           _isLoading = false;
         });
         ToastUtils.showError('Failed to load user data');
+      }
+    }
+  }
+
+  Future<void> _loadWorkoutSessions() async {
+    try {
+      final sessions = await WorkoutService.getWorkoutSessions();
+      if (mounted) {
+        setState(() {
+          _workoutSessions = sessions.length;
+          _isSessionsLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isSessionsLoading = false;
+        });
+        ToastUtils.showError('Failed to load workout sessions');
       }
     }
   }
@@ -107,17 +130,19 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 8),
                   RichText(
-                    text: const TextSpan(
+                    text: TextSpan(
                       text: 'Total workouts\n',
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 20,
                         fontWeight: FontWeight.w500,
                       ),
                       children: [
                         TextSpan(
-                          text: '15',
-                          style: TextStyle(
+                          text: _isSessionsLoading
+                              ? "..."
+                              : _workoutSessions.toString(),
+                          style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w500,
                           ),

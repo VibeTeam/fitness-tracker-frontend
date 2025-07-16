@@ -1,10 +1,15 @@
+import 'package:fitness_tracker_frontend/theme/app_colors.dart';
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
+import '../services/workout_service.dart';
+import '../models/workout_models.dart';
+import '../utils/toast_utils.dart';
 
 void showSetDialog(BuildContext context, String exerciseName) {
   showDialog(
     context: context,
-    builder: (context) => _SetDialog(exerciseName: exerciseName),
+    builder: (BuildContext context) {
+      return _SetDialog(exerciseName: exerciseName);
+    },
   );
 }
 
@@ -18,10 +23,11 @@ class _SetDialog extends StatefulWidget {
 }
 
 class _SetDialogState extends State<_SetDialog> {
-  final List<Map<String, String>> sets = [
+  final List<Map<String, dynamic>> sets = [
     {'weight': '', 'reps': ''},
     {'weight': '', 'reps': ''},
   ];
+  bool _isLoading = false;
 
   void _addSet() {
     if (sets.length < 6) {
@@ -38,9 +44,59 @@ class _SetDialogState extends State<_SetDialog> {
   }
 
   void _removeSet(int index) {
+    if (sets.length > 1) {
+      setState(() {
+        sets.removeAt(index);
+      });
+    }
+  }
+
+  Future<void> _saveWorkout() async {
+    // Проверяем, что все поля заполнены
+    for (int i = 0; i < sets.length; i++) {
+      if (sets[i]['weight']!.trim().isEmpty ||
+          sets[i]['reps']!.trim().isEmpty) {
+        ToastUtils.showError('Please fill all set values');
+        return;
+      }
+    }
+
     setState(() {
-      sets.removeAt(index);
+      _isLoading = true;
     });
+
+    try {
+      // Создаем сессию тренировки
+      final session = await WorkoutService.createWorkoutSession(
+        workoutTypeId: 1, // Временное значение
+      );
+
+      if (session != null) {
+        // Добавляем детали для каждого подхода
+        for (int i = 0; i < sets.length; i++) {
+          await WorkoutService.addWorkoutDetail(
+            sessionId: session.id,
+            detailName: '${widget.exerciseName} Set ${i + 1}',
+            detailValue: '${sets[i]['weight']}kg x ${sets[i]['reps']}',
+          );
+        }
+
+        if (mounted) {
+          Navigator.of(context).pop();
+          ToastUtils.showSuccess('Workout saved successfully!');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        ToastUtils.showError('Failed to save workout');
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -78,6 +134,7 @@ class _SetDialogState extends State<_SetDialog> {
                 runSpacing: 12,
                 children: List.generate(sets.length, (index) {
                   return SizedBox(
+                    key: ValueKey(index),
                     width: MediaQuery.of(context).size.width / 2 - 64,
                     child: Container(
                       padding: const EdgeInsets.all(12),
@@ -99,13 +156,15 @@ class _SetDialogState extends State<_SetDialog> {
                                 ),
                               ),
                               const Spacer(),
-                              GestureDetector(
+                              InkWell(
+                                onTap: () {
+                                  _removeSet(index);
+                                },
                                 child: Icon(
                                   Icons.close,
                                   color: Colors.grey.shade500,
                                   size: 20,
                                 ),
-                                onTap: () => _removeSet(index),
                               ),
                             ],
                           ),
@@ -116,6 +175,8 @@ class _SetDialogState extends State<_SetDialog> {
                               const Text('Weight: '),
                               Expanded(
                                 child: TextField(
+                                  controller: TextEditingController(
+                                      text: sets[index]['weight']),
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.zero,
@@ -133,6 +194,8 @@ class _SetDialogState extends State<_SetDialog> {
                               const Text('Reps: '),
                               Expanded(
                                 child: TextField(
+                                  controller: TextEditingController(
+                                      text: sets[index]['reps']),
                                   decoration: const InputDecoration(
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.zero,
@@ -174,10 +237,7 @@ class _SetDialogState extends State<_SetDialog> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                          // TODO: save data
-                        },
+                        onPressed: _isLoading ? null : _saveWorkout,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.transparent,
                           shadowColor: Colors.transparent,
@@ -190,10 +250,21 @@ class _SetDialogState extends State<_SetDialog> {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
+                        child: _isLoading
+                            ? const SizedBox(
+                                width: 20,
+                                height: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                      Colors.white),
+                                ),
+                              )
+                            : const Text(
+                                'Save',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 16),
+                              ),
                       ),
                     ),
                   ),
