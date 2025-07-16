@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
+import '../l10n/app_localizations.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -39,7 +40,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: const Center(
+      body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -47,8 +48,8 @@ class _SplashScreenState extends State<SplashScreen> {
             Icon(Icons.fitness_center, size: 100, color: Colors.blue),
             SizedBox(height: 24),
             Text(
-              'Fitness Tracker',
-              style: TextStyle(
+              AppLocalizations.of(context).translate('appTitle'),
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
                 color: Colors.black,

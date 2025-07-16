@@ -7,6 +7,8 @@ import '../screens/profile_page.dart';
 import '../services/auth_service.dart';
 import '../models/auth_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -40,7 +42,8 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _isLoading = false;
         });
-        ToastUtils.showError('Failed to load user data');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadUser'));
       }
     }
   }
@@ -79,16 +82,16 @@ class _MainScreenState extends State<MainScreen> {
           unselectedItemColor: Colors.grey,
           selectedLabelStyle: const TextStyle(fontWeight: FontWeight.w600),
           unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500),
-          items: const [
+          items:  [
             BottomNavigationBarItem(
-              icon: Icon(Icons.list_alt_outlined),
-              activeIcon: Icon(Icons.list_alt),
-              label: 'Trainings',
+              icon: const Icon(Icons.list_alt_outlined),
+              activeIcon: const Icon(Icons.list_alt),
+              label: AppLocalizations.of(context).translate('trainings'),
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              activeIcon: Icon(Icons.person),
-              label: 'Profile',
+              icon: const Icon(Icons.person_outline),
+              activeIcon: const Icon(Icons.person),
+              label: AppLocalizations.of(context).translate('profile'),
             ),
           ],
         ),
@@ -99,7 +102,9 @@ class _MainScreenState extends State<MainScreen> {
   Widget _buildHomePage() {
     return Scaffold(
       backgroundColor: AppColors.grey,
-      appBar: const CustomAppBar(title: 'Fitness Tracker'),
+      appBar: CustomAppBar(
+        title: AppLocalizations.of(context).translate('appTitle'),
+      ),
       body: SafeArea(
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
@@ -125,7 +130,13 @@ class _MainScreenState extends State<MainScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Welcome back, ${_currentUser?.name ?? 'User'}!',
+                              AppLocalizations.of(context).translate(
+                                'welcomeUser',
+                                params: {
+                                  'name': _currentUser?.name ??
+                                      AppLocalizations.of(context).translate('user'),
+                                },
+                              ),
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
@@ -134,7 +145,8 @@ class _MainScreenState extends State<MainScreen> {
                             ),
                             const SizedBox(height: 8),
                             Text(
-                              'Ready for your next workout?',
+                              AppLocalizations.of(context).translate('readyWorkout'),
+
                               style: TextStyle(
                                 color: Colors.white.withOpacity(0.9),
                                 fontSize: 16,
@@ -146,9 +158,9 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(height: 24),
 
                       // Статистика
-                      const Text(
-                        'Your Stats',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).translate('yourStats'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -158,7 +170,8 @@ class _MainScreenState extends State<MainScreen> {
                         children: [
                           Expanded(
                             child: _StatCard(
-                              title: 'Workouts',
+                                title: AppLocalizations.of(context)
+                                    .translate('workouts'),
                               value: '0',
                               icon: Icons.fitness_center,
                               color: AppColors.primaryBlue,
@@ -167,7 +180,8 @@ class _MainScreenState extends State<MainScreen> {
                           const SizedBox(width: 12),
                           Expanded(
                             child: _StatCard(
-                              title: 'Exercises',
+                                title: AppLocalizations.of(context)
+                                    .translate('exercises'),
                               value: '0',
                               icon: Icons.list,
                               color: Colors.orange,
@@ -178,9 +192,9 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(height: 24),
 
                       // Быстрые действия
-                      const Text(
-                        'Quick Actions',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).translate('quickActions'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -189,9 +203,11 @@ class _MainScreenState extends State<MainScreen> {
                       Row(
                         children: [
                           Expanded(
-                            child: _ActionCard(
-                              title: 'Start Workout',
-                              subtitle: 'Begin a new training session',
+                              child: _ActionCard(
+                                title: AppLocalizations.of(context)
+                                    .translate('startWorkout'),
+                                subtitle: AppLocalizations.of(context)
+                                    .translate('beginTraining'),
                               icon: Icons.play_arrow,
                               onTap: () {
                                 setState(() {
@@ -202,9 +218,11 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                           const SizedBox(width: 12),
                           Expanded(
-                            child: _ActionCard(
-                              title: 'View History',
-                              subtitle: 'Check your past workouts',
+                              child: _ActionCard(
+                                title: AppLocalizations.of(context)
+                                    .translate('viewHistory'),
+                                subtitle: AppLocalizations.of(context)
+                                    .translate('checkPast'),
                               icon: Icons.history,
                               onTap: () {
                                 setState(() {
@@ -218,9 +236,10 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(height: 24),
 
                       // Последние тренировки
-                      const Text(
-                        'Recent Workouts',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context)
+                            .translate('recentWorkouts'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                         ),
@@ -232,10 +251,11 @@ class _MainScreenState extends State<MainScreen> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        child: const Center(
+                        child:  Center(
                           child: Text(
-                            'No recent workouts',
-                            style: TextStyle(color: Colors.grey, fontSize: 16),
+                            AppLocalizations.of(context).translate('noRecent'),
+                            style: const TextStyle(
+                                color: Colors.grey, fontSize: 16),
                           ),
                         ),
                       ),

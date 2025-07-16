@@ -5,6 +5,8 @@ import '../screens/exercises.dart';
 import '../services/workout_service.dart';
 import '../models/workout_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+
 
 class ExercisesGroupPage extends StatefulWidget {
   const ExercisesGroupPage({super.key});
@@ -37,7 +39,8 @@ class _ExercisesGroupPageState extends State<ExercisesGroupPage> {
         setState(() {
           _isLoading = false;
         });
-        ToastUtils.showError('Failed to load muscle groups');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadMuscles'));
       }
     }
   }
@@ -65,16 +68,18 @@ class _ExercisesGroupPageState extends State<ExercisesGroupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.grey,
-      appBar: const CustomAppBar(title: 'Exercises', showBackButton: true),
+     appBar: CustomAppBar(
+          title: AppLocalizations.of(context).translate('exercises'),
+          showBackButton: true),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 8),
-            const Text(
-              'Muscle groups',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            Text(
+              AppLocalizations.of(context).translate('muscleGroups'),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
             ),
             const SizedBox(height: 16),
             Expanded(

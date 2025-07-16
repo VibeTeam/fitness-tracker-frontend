@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import '../services/workout_service.dart';
 import '../models/workout_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
 
 class ExercisesPage extends StatefulWidget {
   final String title;
@@ -46,7 +47,8 @@ class _ExercisesPageState extends State<ExercisesPage> {
         setState(() {
           _isLoading = false;
         });
-        ToastUtils.showError('Failed to load exercises');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadExercises'));
       }
     }
   }

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../services/workout_service.dart';
 import '../models/workout_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+
 
 void showSetDialog(BuildContext context, String exerciseName) {
   showDialog(
@@ -56,7 +58,8 @@ class _SetDialogState extends State<_SetDialog> {
     for (int i = 0; i < sets.length; i++) {
       if (sets[i]['weight']!.trim().isEmpty ||
           sets[i]['reps']!.trim().isEmpty) {
-        ToastUtils.showError('Please fill all set values');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('pleaseFillSets'));
         return;
       }
     }
@@ -83,12 +86,14 @@ class _SetDialogState extends State<_SetDialog> {
 
         if (mounted) {
           Navigator.of(context).pop();
-          ToastUtils.showSuccess('Workout saved successfully!');
+          ToastUtils.showSuccess(
+              AppLocalizations.of(context).translate('workoutSaved'));
         }
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showError('Failed to save workout');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedSaveWorkout'));
       }
     } finally {
       if (mounted) {
@@ -149,7 +154,10 @@ class _SetDialogState extends State<_SetDialog> {
                           Row(
                             children: [
                               Text(
-                                'Set ${index + 1}',
+                                AppLocalizations.of(context)
+                                    .translate('set', params: {
+                                  'number': (index + 1).toString()
+                                }),
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w600,
                                   fontSize: 18,
@@ -172,7 +180,9 @@ class _SetDialogState extends State<_SetDialog> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text('Weight: '),
+                               Text(
+                                AppLocalizations.of(context).translate('weight'),
+                              ),
                               Expanded(
                                 child: TextField(
                                   controller: TextEditingController(
@@ -191,7 +201,9 @@ class _SetDialogState extends State<_SetDialog> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              const Text('Reps: '),
+                              Text(
+                                AppLocalizations.of(context).translate('reps'),
+                              ),
                               Expanded(
                                 child: TextField(
                                   controller: TextEditingController(
@@ -219,13 +231,13 @@ class _SetDialogState extends State<_SetDialog> {
                 children: [
                   TextButton(
                     onPressed: _addSet,
-                    child: const Text(
-                      'Add set',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: AppColors.primaryBlue,
-                      ),
+                    child: Text(
+                        AppLocalizations.of(context).translate('addSet'),
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                          color: AppColors.primaryBlue,
+                        ),
                     ),
                   ),
                   const SizedBox(width: 48),
@@ -260,9 +272,9 @@ class _SetDialogState extends State<_SetDialog> {
                                       Colors.white),
                                 ),
                               )
-                            : const Text(
-                                'Save',
-                                style: TextStyle(
+                            : Text(
+                                AppLocalizations.of(context).translate('save'),
+                                style: const TextStyle(
                                     color: Colors.white, fontSize: 16),
                               ),
                       ),
