@@ -4,6 +4,8 @@ import '../widgets/primary_button.dart';
 import '../widgets/custom_text_field.dart';
 import '../services/auth_service.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+import '../main.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -41,12 +43,13 @@ class _SignInPageState extends State<SignInPage> {
       );
 
       if (mounted) {
-        ToastUtils.showSuccess('Login successful!');
+        ToastUtils.showSuccess(
+            AppLocalizations.of(context).translate('loginSuccessful'));
         Navigator.pushReplacementNamed(context, '/main');
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showAuthError();
+        ToastUtils.showAuthError(context);
       }
     } finally {
       if (mounted) {
@@ -61,6 +64,24 @@ class _SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.grey,
+      appBar: AppBar(
+        backgroundColor: AppColors.grey,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.language, color: AppColors.black),
+            onPressed: () {
+              final currentLocale = Localizations.localeOf(context);
+              final newLocale = currentLocale.languageCode == 'en'
+                  ? const Locale('ru')
+                  : const Locale('en');
+              MyApp.of(context).setLocale(newLocale);
+            },
+          ),
+        ],
+      ),
       body: SafeArea(
         child: Stack(
           children: [
@@ -77,9 +98,9 @@ class _SignInPageState extends State<SignInPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       const SizedBox(height: 60),
-                      const Text(
-                        'Welcome back!',
-                        style: TextStyle(
+                      Text(
+                        AppLocalizations.of(context).translate('welcomeBack'),
+                        style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
@@ -88,17 +109,19 @@ class _SignInPageState extends State<SignInPage> {
                       const SizedBox(height: 4),
                       RichText(
                         textAlign: TextAlign.center,
-                        text: const TextSpan(
-                          text: 'Sign ',
-                          style: TextStyle(
+                        text: TextSpan(
+                          text: AppLocalizations.of(context)
+                              .translate('signInPart1'),
+                          style: const TextStyle(
                             fontSize: 24,
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                           ),
                           children: [
                             TextSpan(
-                              text: 'in',
-                              style: TextStyle(
+                              text: AppLocalizations.of(context)
+                                  .translate('signInPart2'),
+                              style: const TextStyle(
                                 color: AppColors.primaryBlue,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -109,16 +132,19 @@ class _SignInPageState extends State<SignInPage> {
                       const SizedBox(height: 24),
                       CustomTextField(
                         controller: _emailController,
-                        hintText: 'Email',
+                        hintText:
+                            AppLocalizations.of(context).translate('email'),
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
-                            return 'Please enter your email';
+                            return AppLocalizations.of(context)
+                                .translate('enterEmail');
                           }
                           if (!RegExp(
                             r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
                           ).hasMatch(value)) {
-                            return 'Please enter a valid email';
+                            return AppLocalizations.of(context)
+                                .translate('enterValidEmail');
                           }
                           return null;
                         },
@@ -126,18 +152,23 @@ class _SignInPageState extends State<SignInPage> {
                       const SizedBox(height: 10),
                       CustomTextField(
                         controller: _passwordController,
-                        hintText: 'Password',
+                        hintText: AppLocalizations.of(context)
+                            .translate('password'),
                         obscureText: true,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter your password';
+                            return AppLocalizations.of(context)
+                                .translate('enterPassword');
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 10),
                       PrimaryButton(
-                        text: _isLoading ? 'Signing in...' : 'Sign in',
+                        text: _isLoading
+                            ? AppLocalizations.of(context)
+                                .translate('signingIn')
+                            : AppLocalizations.of(context).translate('signIn'),
                         onPressed: _isLoading ? null : _signIn,
                       ),
                       const SizedBox(height: 48),
@@ -153,17 +184,18 @@ class _SignInPageState extends State<SignInPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Not registered? ',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                   Text(
+                    AppLocalizations.of(context).translate('notRegistered'),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.w500),
                   ),
                   GestureDetector(
                     onTap: () {
                       Navigator.pushReplacementNamed(context, '/register');
                     },
-                    child: const Text(
-                      'Sign up',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context).translate('signUp'),
+                      style: const TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,

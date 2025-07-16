@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../services/workout_service.dart';
 import '../models/workout_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+import '../main.dart';
 
 class TrainingsPage extends StatefulWidget {
   const TrainingsPage({super.key});
@@ -35,7 +37,8 @@ class _TrainingsPageState extends State<TrainingsPage> {
         setState(() {
           _isLoading = false;
         });
-        ToastUtils.showError('Failed to load workout sessions');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadSessions'));
       }
     }
   }
@@ -47,16 +50,16 @@ class _TrainingsPageState extends State<TrainingsPage> {
       final difference = now.difference(date).inDays;
 
       if (difference == 0) {
-        return 'Today';
+        return AppLocalizations.of(context).translate('today');
       } else if (difference == 1) {
-        return 'Yesterday';
+        return AppLocalizations.of(context).translate('yesterday');
       } else if (difference < 7) {
         return '${date.day}/${date.month}';
       } else {
         return '${date.day}/${date.month}/${date.year}';
       }
     } catch (e) {
-      return 'Unknown date';
+      return AppLocalizations.of(context).translate('unknownDate');
     }
   }
 
@@ -96,12 +99,24 @@ class _TrainingsPageState extends State<TrainingsPage> {
       backgroundColor: AppColors.grey,
       appBar: AppBar(
         backgroundColor: AppColors.grey,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.language, color: AppColors.black),
+            onPressed: () {
+              final currentLocale = Localizations.localeOf(context);
+              final newLocale = currentLocale.languageCode == 'en'
+                  ? const Locale('ru')
+                  : const Locale('en');
+              MyApp.of(context).setLocale(newLocale);
+            },
+          ),
+        ],
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: const Text(
-          'My Trainings',
-          style: TextStyle(
+        title: Text(
+          AppLocalizations.of(context).translate('trainings'),
+          style: const TextStyle(
             color: AppColors.black,
             fontSize: 24,
             fontWeight: FontWeight.w500,
@@ -115,10 +130,12 @@ class _TrainingsPageState extends State<TrainingsPage> {
             : RefreshIndicator(
                 onRefresh: _loadWorkoutSessions,
                 child: _workoutSessions.isEmpty
-                    ? const Center(
+                    ?  Center(
                         child: Text(
-                          'No workouts yet. Start your first workout!',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          AppLocalizations.of(context)
+                              .translate('noWorkoutsYet'),
+                          style: const TextStyle(
+                              fontSize: 16, color: Colors.grey),
                         ),
                       )
                     : ListView.builder(
@@ -133,7 +150,8 @@ class _TrainingsPageState extends State<TrainingsPage> {
                             padding: const EdgeInsets.only(bottom: 16),
                             child: _TrainingCard(
                               title: session.workoutType?.name ??
-                                  'Unknown Workout',
+                                  AppLocalizations.of(context)
+                                      .translate('unknownWorkout'),
                               date: _formatDate(session.datetime),
                               exercises: _buildExerciseRows(session),
                             ),
@@ -278,6 +296,7 @@ class _AddTrainingModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     return SafeArea(
       child: Stack(
         children: [
@@ -313,10 +332,10 @@ class _AddTrainingModal extends StatelessWidget {
                         ),
                       ),
                     ),
-                    const Center(
+                     Center(
                       child: Text(
-                        'New workout',
-                        style: TextStyle(
+                        AppLocalizations.of(context).translate('newWorkout'),
+                        style: const TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.w600,
                         ),
@@ -326,7 +345,8 @@ class _AddTrainingModal extends StatelessWidget {
                     TextField(
                       controller: null,
                       decoration: InputDecoration(
-                        hintText: 'Enter title',
+                        hintText:
+                            AppLocalizations.of(context).translate('enterTitle'),
                         filled: true,
                         fillColor: AppColors.grey,
                         border: OutlineInputBorder(
@@ -378,12 +398,13 @@ class _AddTrainingModal extends StatelessWidget {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   TextButton(
-                    onPressed: () =>
-                        Navigator.pushNamed(context, '/exercises_group'),
-                    child: const Text(
-                      'Add exercise',
-                      style: TextStyle(color: Color(0xFF3981E0), fontSize: 16),
-                    ),
+                      onPressed: () =>
+                          Navigator.pushNamed(context, '/exercises_group'),
+                      child: Text(
+                        AppLocalizations.of(context).translate('addExercise'),
+                        style:
+                            const TextStyle(color: Color(0xFF3981E0), fontSize: 16),
+                      ),
                   ),
                   SizedBox(
                     height: 44,
@@ -406,10 +427,11 @@ class _AddTrainingModal extends StatelessWidget {
                           ),
                           elevation: 0,
                         ),
-                        child: const Text(
-                          'Save',
-                          style: TextStyle(color: Colors.white, fontSize: 16),
-                        ),
+                        child: Text(
+                            AppLocalizations.of(context).translate('save'),
+                            style: const TextStyle(
+                                color: Colors.white, fontSize: 16),
+                          ),
                       ),
                     ),
                   ),

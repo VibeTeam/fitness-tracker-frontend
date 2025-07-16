@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import '../services/auth_service.dart';
 import '../models/auth_models.dart';
 import '../utils/toast_utils.dart';
+import '../l10n/app_localizations.dart';
+import '../main.dart';
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -39,7 +42,8 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           _isLoading = false;
         });
-        ToastUtils.showError('Failed to load user data');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadUser'));
       }
     }
   }
@@ -58,7 +62,8 @@ class _ProfilePageState extends State<ProfilePage> {
         setState(() {
           _isSessionsLoading = false;
         });
-        ToastUtils.showError('Failed to load workout sessions');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedLoadSessions'));
       }
     }
   }
@@ -67,12 +72,14 @@ class _ProfilePageState extends State<ProfilePage> {
     try {
       await AuthService.signOut();
       if (mounted) {
-        ToastUtils.showInfo('Signed out successfully');
+        ToastUtils.showInfo(
+            AppLocalizations.of(context).translate('signedOut'));
         Navigator.pushReplacementNamed(context, '/login');
       }
     } catch (e) {
       if (mounted) {
-        ToastUtils.showError('Failed to sign out');
+        ToastUtils.showError(
+            AppLocalizations.of(context).translate('failedSignOut'));
       }
     }
   }
@@ -85,9 +92,21 @@ class _ProfilePageState extends State<ProfilePage> {
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        title: const Text(
-          'Profile',
-          style: TextStyle(
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.language, color: AppColors.black),
+            onPressed: () {
+              final currentLocale = Localizations.localeOf(context);
+              final newLocale = currentLocale.languageCode == 'en'
+                  ? const Locale('ru')
+                  : const Locale('en');
+              MyApp.of(context).setLocale(newLocale);
+            },
+          ),
+        ],
+        title:  Text(
+          AppLocalizations.of(context).translate('profileTitle'),
+          style: const TextStyle(
             color: AppColors.black,
             fontSize: 24,
             fontWeight: FontWeight.w500,
@@ -112,7 +131,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 18),
                   Text(
-                    _user?.email ?? 'No email',
+                    _user?.email ??
+                        AppLocalizations.of(context).translate('noEmail'),
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w500,
@@ -121,7 +141,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    _user?.name ?? 'No name',
+                    _user?.name ??
+                        AppLocalizations.of(context).translate('noName'),
                     style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w400,
@@ -131,7 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   const SizedBox(height: 8),
                   RichText(
                     text: TextSpan(
-                      text: 'Total workouts\n',
+                      text: AppLocalizations.of(context).translate('totalWorkouts'),
                       style: const TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 20,
@@ -152,9 +173,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 64),
-                  const Text(
-                    'AI assistant insight',
-                    style: TextStyle(
+                  Text(
+                    AppLocalizations.of(context).translate('aiInsight'),
+                    style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
                       color: AppColors.black,
@@ -169,9 +190,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         gradient: AppColors.primaryGradient,
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child: const Text(
-                        "You're making great progress! Upper body strength is improving steadily. Try adding one more leg session this week for better balance. Don't forget to increase weights slightly on your main lifts.",
-                        style: TextStyle(
+                      child: Text(
+                        AppLocalizations.of(context).translate('aiText'),
+                        style: const TextStyle(
                           color: AppColors.white,
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -183,9 +204,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   const Spacer(),
                   TextButton(
                     onPressed: _signOut,
-                    child: const Text(
-                      'Log out',
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context).translate('logOut'),
+                      style: const TextStyle(
                         color: AppColors.primaryBlue,
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
