@@ -242,26 +242,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       fontSize: 18,
                       color: Theme.of(context).colorScheme.onBackground,),
                   ),
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 24),
-                    child: Container(
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Text(
-                        AppLocalizations.of(context).translate('aiText'),
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      ),
-                  ),
                       if(_suggestionError)
                         IconButton(
                       icon: const Icon(Icons.refresh, size: 20),
